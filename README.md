@@ -1,6 +1,6 @@
 # Concurrent Sagemaker Calls for Video Analytics
 
-<img src="data/*.gif"/>
+<!--- <img src="data/*.gif"/> --->
 
 This project calls sagemaker endpoint concurrently for image detection.
 
