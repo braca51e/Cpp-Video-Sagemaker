@@ -85,7 +85,6 @@ std::future<void> FrameProcessing::addFrameToQueue(std::shared_ptr<Frame> frame,
     _waitingFrames.pushBack(frame, std::move(promiseFrameProcessed));
 
     // wait until frame has been processed
-    //ftrFrameProcessed.wait();
     //std::cout << "Processed frame " << _frameNumber << std::endl;
     return std::move(future);
 }

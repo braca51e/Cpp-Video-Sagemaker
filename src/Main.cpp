@@ -11,7 +11,7 @@ int main(int argc, const char* argv[])
     parser.parse(argc, argv);
     std::string videoPath = parser.retrieve<std::string>("input");
 
-    // draw all objects in vector
+    // Begin frame extraction
     Extractor *extractor = new Extractor();
     extractor->setVideoName(videoPath);
     extractor->loadVideo();

@@ -31,10 +31,10 @@ public:
     // miscellaneous
 
 private:
-    static const char* _ALLOCATION_TAG;
+    const char* _ALLOCATION_TAG;
     Aws::Client::ClientConfiguration _awsClient_configuration;
     Aws::SDKOptions _awsOptions;
-    std::shared_ptr<SageMakerRuntimeClient> _sagemakerClient;
+    //std::shared_ptr<SageMakerRuntimeClient> _sagemakerClient;
     Aws::String _endpoint;
 };
 
