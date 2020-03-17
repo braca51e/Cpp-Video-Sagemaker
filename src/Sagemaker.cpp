@@ -7,7 +7,7 @@ Sagemaker::Sagemaker():_ALLOCATION_TAG("SagemakerEndpoint"){
     _awsClient_configuration.maxConnections = 180;
     _awsClient_configuration.connectTimeoutMs = 2000;
     _awsOptions.loggingOptions.logLevel = Aws::Utils::Logging::LogLevel::Debug;
-    _endpoint = "ott-detect";
+    _endpoint = "endpoint-name";
     Aws::InitAPI(_awsOptions);
 }
 
