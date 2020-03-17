@@ -2,7 +2,7 @@
 
 <!--- <img src="data/*.gif"/> --->
 
-This project calls sagemaker endpoint concurrently for image detection.
+This project calls sagemaker endpoint concurrently for image detection. Only tested on macOS Mojave!
 
 ## Dependencies for Running Locally
 * cmake >= 2.8
