@@ -1,6 +1,6 @@
 #include "FrameProcessing.h"
 
-const unsigned int FrameProcessing::_sagemakerCallLimit = 100;
+const unsigned int FrameProcessing::_sagemakerCallLimit = 1000;
 unsigned int FrameProcessing::_sagemakerCallCount;
 
 /* Implementation of class "WaitingFrames" */

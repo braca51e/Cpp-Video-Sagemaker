@@ -10,20 +10,12 @@ Sagemaker::Sagemaker(){
     _awsClient_configuration.region = Aws::Region::US_EAST_1;
     _awsClient_configuration.maxConnections = 180;
     _awsClient_configuration.connectTimeoutMs = 2000;
-<<<<<<< HEAD
-    _awsOptions.loggingOptions.logLevel = Aws::Utils::Logging::LogLevel::Debug;
-    _endpoint = "endpoint-name";
-    Aws::InitAPI(_awsOptions);
-=======
     _awsSdkOptions.loggingOptions.logLevel = Aws::Utils::Logging::LogLevel::Debug;
     _endpoint = "endpoint-name";
     InitAPI(_awsSdkOptions);
     _sagemakerClient = Aws::MakeShared<Aws::SageMakerRuntime::SageMakerRuntimeClient>(_ALLOCATION_TAG,
                                    Aws::MakeShared<Auth::DefaultAWSCredentialsProviderChain>(_ALLOCATION_TAG),
                                         _awsClient_configuration);
-    /*_sagemakerClient = Aws::MakeShared<Aws::SageMakerRuntime::SageMakerRuntimeClient>(_ALLOCATION_TAG,
-                                        _awsClient_configuration);*/
->>>>>>> First functional calls to endpoint
 }
 
 Sagemaker::~Sagemaker(){
