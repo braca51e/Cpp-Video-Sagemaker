@@ -37,7 +37,7 @@ public:
 
     // typical behaviour methods
     void pushBack(std::future<void> &&future, std::promise<void> &&framePromise);
-    void waitForFirstInQueue();
+    void waitForFirstInQueue(bool &frameProcessed);
 
 private:
     std::vector<std::future<void>> _futures; // list of associated promises
@@ -60,7 +60,10 @@ public:
     std::future<void> addFrameToQueue(std::shared_ptr<Frame> frame, std::future<void> &&future);
 
 private:
-
+    //control number of calls to endpoint
+    static const unsigned int _sagemakerCallLimit;
+    static unsigned int _sagemakerCallCount;
+    std::mutex _mutexSageCount;
     // typical behaviour methods
     void processFrameQueue();
     void waitSagemakerCall();

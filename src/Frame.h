@@ -14,8 +14,8 @@ struct InfereceResult{
         float confidence;
         float bboxX;
         float bboxY;
-        float bboxW;
-        float bboxH;
+        float bboxB;
+        float bboxR;
         std::string label;
         int frameNumber;
 };

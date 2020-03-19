@@ -1,5 +1,8 @@
 #include "FrameProcessing.h"
 
+const unsigned int FrameProcessing::_sagemakerCallLimit = 100;
+unsigned int FrameProcessing::_sagemakerCallCount;
+
 /* Implementation of class "WaitingFrames" */
 int WaitingFrames::getSize()
 {
@@ -37,7 +40,7 @@ void WaitingSageResponse::pushBack(std::future<void> &&future, std::promise<void
     _framePromises.emplace_back(std::move(framePromise));
 }
 
-void WaitingSageResponse::waitForFirstInQueue()
+void WaitingSageResponse::waitForFirstInQueue(bool &frameProcessed)
 {
     std::lock_guard lck(_mutexSage);
     if(_futures.size() > 0 && _framePromises.size() > 0){
@@ -49,6 +52,7 @@ void WaitingSageResponse::waitForFirstInQueue()
         framePromise->set_value();
         _futures.erase(_futures.begin());
         _framePromises.erase(_framePromises.begin());
+        frameProcessed = true;
     }
 }
 
@@ -67,6 +71,7 @@ void FrameProcessing::setSagemakerHandle(std::shared_ptr<Sagemaker> sagemaker){
 FrameProcessing::FrameProcessing(){
     //create a pointer to processing objejct
     _sagemaker = std::make_shared<Sagemaker>();
+    _sagemakerCallCount = 0;
 }
 
 void FrameProcessing::startProcessing(){
@@ -85,7 +90,6 @@ std::future<void> FrameProcessing::addFrameToQueue(std::shared_ptr<Frame> frame,
     _waitingFrames.pushBack(frame, std::move(promiseFrameProcessed));
 
     // wait until frame has been processed
-    //std::cout << "Processed frame " << _frameNumber << std::endl;
     return std::move(future);
 }
 
@@ -93,8 +97,7 @@ void FrameProcessing::processFrameQueue(){
     while (true) {
         // sleep at every iteration to reduce CPU usage
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
-        if(_waitingFrames.getSize() > 0){
+        if(_waitingFrames.getSize() > 0 && _sagemakerCallCount < _sagemakerCallLimit){
             //Get first of the queue
             std::promise<void> promiseFrame;
             std::shared_ptr<Frame> frame;
@@ -103,6 +106,9 @@ void FrameProcessing::processFrameQueue(){
             auto sageFuture = std::async(&Sagemaker::infer, _sagemaker, frame);
             //Pass future to a process that waits for Sagemaker response
             _sagemakerInfeDone.pushBack(std::move(sageFuture), std::move(promiseFrame));
+            //Increase call count
+            std::lock_guard lck(_mutexSageCount);
+            _sagemakerCallCount += 1;
         }
     }
 }
@@ -112,6 +118,11 @@ void FrameProcessing::waitSagemakerCall(){
     while (true) {
         //Sagemaker takes more time to respond
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        _sagemakerInfeDone.waitForFirstInQueue();
+        bool frameProcessed;
+        _sagemakerInfeDone.waitForFirstInQueue(frameProcessed);
+        if(frameProcessed && _sagemakerCallCount > 0){
+            std::lock_guard lck(_mutexSageCount);
+            _sagemakerCallCount -= 1;
+        }
     }
 }

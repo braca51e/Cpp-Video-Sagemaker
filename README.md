@@ -11,6 +11,8 @@ This project calls sagemaker endpoint concurrently for image detection. Only tes
   * Mac: [install Xcode command line tools to get make](https://developer.apple.com/xcode/features/)
 * gcc/g++ >= 5.4
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
+* OpenCV >= 4.1
+  * The OpenCV 4.1.0 source code can be found [here](https://github.com/opencv/opencv/tree/4.1.0)
 * aws
   * aws-sdk-cpp: [Click here for installation instructions](https://github.com/aws/aws-sdk-cpp)
 

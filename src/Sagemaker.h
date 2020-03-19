@@ -2,16 +2,17 @@
 #define SAGEMAKER_H
 
 #include <aws/core/Aws.h>
+#include <aws/core/utils/Outcome.h>
+#include <aws/core/utils/logging/LogLevel.h>
+#include <aws/core/client/ClientConfiguration.h>
+#include <aws/sagemaker-runtime/SageMakerRuntimeClient.h>
 #include <aws/sagemaker-runtime/model/InvokeEndpointRequest.h>
 #include <aws/sagemaker-runtime/model/InvokeEndpointResult.h>
-#include <aws/sagemaker-runtime/SageMakerRuntimeClient.h>
-#include <aws/core/utils/Outcome.h>
 #include <aws/core/auth/AWSCredentialsProviderChain.h>
 #include <fstream>
 #include "Frame.h"
 
-using namespace Aws::Auth;
-using namespace Aws::SageMakerRuntime;
+using namespace Aws;
 
 // forward declaration to avoid include cycle
 class Frame;
@@ -31,11 +32,11 @@ public:
     // miscellaneous
 
 private:
-    const char* _ALLOCATION_TAG;
-    Aws::Client::ClientConfiguration _awsClient_configuration;
-    Aws::SDKOptions _awsOptions;
-    //std::shared_ptr<SageMakerRuntimeClient> _sagemakerClient;
-    Aws::String _endpoint;
+    static const char* _ALLOCATION_TAG;
+    Client::ClientConfiguration _awsClient_configuration;
+    SDKOptions _awsSdkOptions;
+    std::shared_ptr<SageMakerRuntime::SageMakerRuntimeClient> _sagemakerClient;
+    String _endpoint;
 };
 
 #endif

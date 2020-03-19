@@ -8,7 +8,6 @@ Frame::Frame(){
 }
 
 std::future<void> Frame::process(){
-    //std::cout << "Frame # " << _frameNumber << " ::process: thread frame = " << std::this_thread::get_id() << std::endl;
     // initalize variables
 
     // push frame to the queue
